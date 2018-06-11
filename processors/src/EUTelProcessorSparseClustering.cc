@@ -1,4 +1,8 @@
 /*
+ *   EUTelSparseClustering.cc
+ *
+ *   Last modification:  07. June 2018 (Jan-Hendrik Arling)
+ *
  *   Most of this code is based on the EUTelClusteringProcessor by
  *   Antonio Bulgheroni
  *
@@ -72,47 +76,52 @@ EUTelProcessorSparseClustering::EUTelProcessorSparseClustering()
       _isGeometryReady(false), _sensorIDVec(), _zsInputDataCollectionVec(nullptr),
       _pulseCollectionVec(nullptr), _sparseMinDistanceSquared(2) {
 
-  // modify processor description
+  // processor description
   _description = "EUTelProcessorSparseClustering is looking for clusters into "
                  "a calibrated pixel matrix.";
 
-  // first of all we need to register the input collection
-  registerInputCollection(LCIO::TRACKERDATA, "ZSDataCollectionName",
-                          "Input of Zero Suppressed data",
-                          _zsDataCollectionName, std::string("zsdata"));
+  // register input collections
+  registerInputCollection( LCIO::TRACKERDATA, 
+			   "ZSDataCollectionName",
+			   "Input of Zero Suppressed data",
+			   _zsDataCollectionName, 
+			   std::string("zsdata"));
 
-  registerOutputCollection(LCIO::TRACKERPULSE, "PulseCollectionName",
-                           "Cluster (output) collection name",
-                           _pulseCollectionName, std::string("cluster"));
+  registerOutputCollection( LCIO::TRACKERPULSE, 
+			    "PulseCollectionName",
+			    "Cluster (output) collection name",
+			    _pulseCollectionName, 
+			    std::string("cluster"));
 
-  // now the optional parameters
-  registerProcessorParameter(
-      "TCut", "Time cut in time units of your sensor", _cutT,
-      std::numeric_limits<float>::max());
+  // processor parameters
+  registerProcessorParameter( "TCut", 
+			      "Time cut in time units of your sensor", 
+			      _cutT,
+			      std::numeric_limits<float>::max());
 
+  registerProcessorParameter( "SparseMinDistanceSquared",
+			      "Minimum distance squared between sparsified pixel ( touching == 2) [integer]",
+			      _sparseMinDistanceSquared, 
+			      2);
+
+  // optional parameters
+  registerOptionalParameter( "ExcludedPlanes",
+			     "The list of sensor ids that have to be excluded from the clustering.",
+			     _ExcludedPlanes, 
+			     std::vector<int>());
+
+  _isFirstEvent = true;
+
+  // to get rid off:
   registerProcessorParameter(
       "HistoInfoFileName", "This is the name of the histogram information file",
       _histoInfoFileName, std::string("histoinfo.xml"));
-
   registerProcessorParameter("HistogramFilling",
                              "Switch on or off the histogram filling",
                              _fillHistos, true);
-
-  registerOptionalParameter(
-      "ExcludedPlanes",
-      "The list of sensor ids that have to be excluded from the clustering.",
-      _ExcludedPlanes, std::vector<int>());
-
-  registerProcessorParameter(
-      "SparseMinDistanceSquared",
-      "Minimum distance squared between sparsified pixel ( touching == 2) [integer]",
-      _sparseMinDistanceSquared, 2);
-
-  _isFirstEvent = true;
 }
 
 void EUTelProcessorSparseClustering::init() {
-  // this method is called only once even when the rewind is active, it is
   // usually a good idea to
   printParameters();
 
@@ -124,19 +133,19 @@ void EUTelProcessorSparseClustering::init() {
   _iRun = 0;
   _iEvt = 0;
 
-  // the geometry is not yet initialized, so set the corresponding switch to
-  // false
+  // the geometry is not yet initialized, so set the corresponding switch to false
   _isGeometryReady = false;
 }
 
 void EUTelProcessorSparseClustering::processRunHeader(LCRunHeader *rdr) {
+  
   auto runHeader = std::make_unique<EUTelRunHeaderImpl>(rdr);
   runHeader->addProcessor(type());
   ++_iRun;
 }
 
-void EUTelProcessorSparseClustering::initializeGeometry(LCEvent *event){
-
+void EUTelProcessorSparseClustering::initializeGeometry(LCEvent *event) {
+  
   // set the total number of detector to zero. This number can be different from
   // the one written in the gear description because
   // the input collection can contain only a fraction of all the sensors.
@@ -146,8 +155,7 @@ void EUTelProcessorSparseClustering::initializeGeometry(LCEvent *event){
   streamlog_out(DEBUG5) << "Initializing geometry" << std::endl;
 
   try {
-    _zsInputDataCollectionVec = dynamic_cast<LCCollectionVec *>(
-        event->getCollection(_zsDataCollectionName));
+    _zsInputDataCollectionVec = dynamic_cast<LCCollectionVec *>( event->getCollection(_zsDataCollectionName) );
     _noOfDetector += _zsInputDataCollectionVec->getNumberOfElements();
     CellIDDecoder<TrackerDataImpl> cellDecoder(_zsInputDataCollectionVec);
 
@@ -230,7 +238,7 @@ void EUTelProcessorSparseClustering::processEvent(LCEvent *event) {
 
   sparseClustering(evt, pulseCollection);
 
-  // if the pulseCollection is not empty add it to the event
+  // if the pulseCollection is not empty, add it to the event
   if (!pulseCollectionExists &&
 	((pulseCollection->size() != _initialPulseCollectionSize) || _initialPulseCollectionSize == 0)) {  
     evt->addCollection(pulseCollection, _pulseCollectionName);
@@ -248,8 +256,7 @@ void EUTelProcessorSparseClustering::processEvent(LCEvent *event) {
   _isFirstEvent = false;
 }
 
-void EUTelProcessorSparseClustering::sparseClustering(
-    LCEvent *evt, LCCollectionVec *pulseCollection) {
+void EUTelProcessorSparseClustering::sparseClustering( LCEvent *evt, LCCollectionVec *pulseCollection) {
 
   // prepare some decoders
   CellIDDecoder<TrackerDataImpl> cellDecoder(_zsInputDataCollectionVec);
@@ -367,8 +374,7 @@ void EUTelProcessorSparseClustering::sparseClustering(
         sparseClusterCollectionVec->push_back(zsCluster.get());
 
         // prepare a pulse for this cluster
-        std::unique_ptr<TrackerPulseImpl> zsPulse =
-            std::make_unique<TrackerPulseImpl>();
+        std::unique_ptr<TrackerPulseImpl> zsPulse = std::make_unique<TrackerPulseImpl>();
         idZSPulseEncoder["sensorID"] = sensorID;
         idZSPulseEncoder["type"] = static_cast<int>(kEUTelSparseClusterImpl);
         idZSPulseEncoder.setCellID(zsPulse.get());
