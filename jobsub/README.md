@@ -1,7 +1,8 @@
 jobsub is a tool for the convenient run-specific modification of
 Marlin steering files and their execution through the Marlin processor.
 
-* Usage
+Usage
+===============================================================================
 ```
 usage: jobsub [-h] [--option NAME=VALUE] [-c FILE] [-csv FILE] [-g]
               [-condor FILE] [-lx FILE] [--concatenate] [--log-file FILE]
@@ -57,8 +58,8 @@ optional arguments:
                         prefix-less format i.e. without time stamping
 ```
 
-* Preparation of Steering File Templates
-
+Preparation of Steering File Templates
+===============================================================================
   Steering file templates are valid Marlin steering files (in ```xml```
   format) where single values are replaced by variables in the form
   ```@SomeVariable@```.
@@ -72,11 +73,11 @@ optional arguments:
   substituted with the current run number (padded with leading zeros
   to six digits, e.g. 001234).
 
-* Configuration
-
+Configuration
+===============================================================================
   There are only very few predefined options: 
-  ** TemplateFile, TemplatePath: used to find the correct steering file template for the current task
-  ** DatabasePath, LcioPath, HistogramPath, LogPath, SteeringPath: paths for storing of results
+  * TemplateFile, TemplatePath: used to find the correct steering file template for the current task
+  * DatabasePath, LcioPath, HistogramPath, LogPath, SteeringPath: paths for storing of results
   
   You can modify these options is the same way as placeholders in the template file, as described below.
   
@@ -95,8 +96,8 @@ optional arguments:
      Config files are text file consisting of sections (indicated by '[]'):
       * a global section called ```[DEFAULT]```
       * task-specific sections
-     as well as "name: value" or "name=value" entries, where 'name' are
-     arbitrary steering file variables (case-insensitive).
+      * "name: value" or "name=value" entries, where 'name' are
+      arbitrary steering file variables (case-insensitive).
 
      Some noteworthy features include:
       * comment prefix characters are # and ;
@@ -128,7 +129,8 @@ optional arguments:
     * requires one column labeled "RunNumber"
     * only considers placeholders left in the steering template after processing command-line arguments and config file options
     
-* Concatenation
+Concatenation
+===============================================================================
    If you have an option e.g. the LCIO input files that you want to
    fill with several runs in one steering file, you can use a command
    line switch to activate concatenation. This replaces any steering
@@ -151,8 +153,8 @@ optional arguments:
    This can be useful if you want to combine several runs e.g. for alignment.
 
 
-* Workflow
-
+Workflow
+===============================================================================
   An analysis is controlled by a config file (config.cfg), a csv-table 
   (runlist.csv) and steering file templates (*.xml).
 
