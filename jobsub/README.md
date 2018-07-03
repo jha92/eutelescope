@@ -79,21 +79,22 @@ optional arguments:
   * DatabasePath, LcioPath, HistogramPath, LogPath, SteeringPath: paths for storing of results
   
   You can modify these options is the same way as placeholders in the template file, as described below.
+  
   * Command Line
-   Variable substitutions can be specified using the ```--option``` or ```-o``` command line switches, e.g.
-
-   ```
-   jobsub.py --option beamenergy=5.3 align 1234
-   ```
-   
-   This switch be specified several times for multiple options or can
-   parse a comma-separated list of options. This switch overrides any
-   config file options.
+  
+    Variable substitutions can be specified using the ```--option``` or ```-o``` command line switches, e.g.
+    ```
+    jobsub.py --option beamenergy=5.3 align 1234
+    ```
+    This switch be specified several times for multiple options or can
+    parse a comma-separated list of options. This switch overrides any
+    config file options.
    
    * Config File
-   Config files are text file consisting of sections (indicated by '[]'):
-   - a global section called ```[DEFAULT]```
-   - task-specific sections
+   
+     Config files are text file consisting of sections (indicated by '[]'):
+      - a global section called ```[DEFAULT]```
+      - task-specific sections
 
    as well as "name: value" or "name=value" entries, where 'name' are
    arbitrary steering file variables (case-insensitive).
@@ -122,6 +123,7 @@ optional arguments:
   - for an example configuration file, please have a look on the provided examples
   
   * Table (comma-separated text file)
+  
    - format: e.g. 
      - export from Open/LibreOffice with default settings (UTF-8,comma-separated, text-field delimiter: ")
      - emacs org-mode table (see http://orgmode.org/manual/Tables.html)
