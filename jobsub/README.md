@@ -122,12 +122,9 @@ optional arguments:
  
   * Table (comma-separated text file)
   
-    * format: e.g. 
-     - export from Open/LibreOffice with default settings (UTF-8,comma-separated, text-field delimiter: ")
-     - emacs org-mode table (see http://orgmode.org/manual/Tables.html)
+    * format: e.g. export from Open/LibreOffice with default settings (UTF-8,comma-separated, text-field delimiter: ") or emacs org-mode table (see http://orgmode.org/manual/Tables.html)
     * commented lines (starting with #) are ignored
-    * first row (after comments) has to provide column headers which identify the variables in the steering template to replace     
-      (case-insensitive)
+    * first row (after comments) has to provide column headers which identify the variables in the steering template to replace (case-insensitive)
     * requires one column labeled "RunNumber"
     * only considers placeholders left in the steering template after processing command-line arguments and config file options
     
@@ -137,26 +134,20 @@ optional arguments:
    line switch to activate concatenation. This replaces any steering
    file placeholder whose corresponding option contains the string
    ```@RunRange@``` multiple times, once for every run specified.
-
    ```
    jobsub.py --concatenate --option LCIOInputFiles=/my/path/to/data/@RunRange@.lcio align 1234 1235-1237
    ```
-
    This will create *one* steering file (for run 1234) in which the placeholder
    ```@LCIOInputFiles@``` is replaced four times by its value with
    ```@RunRange@``` replaced by values from 1234 to 1237, e.g.
-
   ```
     <parameter name="FileName" type="string" value= @LCIOInputFiles@/>
    ```
-
    becomes:
-
    ```
     <parameter name="FileName" type="string" value= /my/path/to/data/1234.lcio 
             /my/path/to/data/1235.lcio /my/path/to/data/1236.lcio /my/path/to/data/1237.lcio/>
    ```
-
    This can be useful if you want to combine several runs e.g. for alignment.
 
 
@@ -173,7 +164,6 @@ optional arguments:
   ```
   jobsub -c config.cfg -csv runlist.csv JOBTASK RUNNR
   ```
-
   Here, jobsub will generate a steering file using the template file
   specified in the config file (default would be 'JOBTASK-tmp.xml'),
   thereby replacing any variables given in the config and table files.
