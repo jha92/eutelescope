@@ -1,20 +1,19 @@
-# this file uses emacs Org mode formatting -*- mode: Org; -*-
 * Overview
   jobsub is a tool for the convenient run-specific modification of
   Marlin steering files and their execution through the Marlin
   processor.
 * Usage
-#+begin_example
-usage: jobsub.py [-h] [--option NAME=VALUE] [-c FILE] [-csv FILE]
-                 [--log-file FILE] [-l LEVEL] [-s] [--dry-run]
-		 [--naf FILE | --lxplus FILE] [--subdir]
-                 jobtask [runs [runs ...]]
+```
+usage: jobsub [-h] [--option NAME=VALUE] [-c FILE] [-csv FILE] [-g]
+              [-condor FILE] [-lx FILE] [--concatenate] [--log-file FILE]
+              [-l LEVEL] [-s] [--dry-run] [--plain]
+              jobtask [runs [runs ...]]
 
 A tool for the convenient run-specific modification of Marlin steering files
 and their execution through the Marlin processor
 
 positional arguments:
-  jobtask               Which task to submit (e.g. convert, hitmaker, align);
+  jobtask               Which task to submit (e.g. converter, hitmaker, align);
                         task names are arbitrary and can be set up by the
                         user; they determine e.g. the config section and
                         default steering file names.
@@ -31,14 +30,23 @@ optional arguments:
   -c FILE, --conf-file FILE, --config FILE
                         Load specified config file with global and task
                         specific variables
-  --concatenate         Modifies run range treatment: concatenate all runs
-                        into first run (e.g. to combine runs for alignment) by
-                        combining every options that includes the string
-                        '@RunRange@ multiple times, once for each run of the
-                        range specified.
   -csv FILE, --csv-file FILE
                         Load additional run-specific variables from table
                         (text file in csv format)
+  -g, --graphic
+  -condor FILE, --condor_file FILE
+                        Specify parameter file for HTCondor submission. Run
+                        batch submission via condor_submit instead of calling
+                        Marlin directly
+  -lx FILE, --lxplus-file FILE, --lxplus FILE
+                        Specify bsub parameter file for LXPLUS submission. Run
+                        LXPLUS submission via bsub instead of calling Marlin
+                        directly
+  --concatenate         Modifies run range treatment: concatenate all runs
+                        into first run (e.g. to combine runs for alignment) by
+                        combining every options that includes the string
+                        '@RunRange@' multiple times, once for each run of the
+                        range specified.
   --log-file FILE       Save submission log to specified file
   -l LEVEL, --log LEVEL
                         Sets the verbosity of log messages during job
@@ -46,17 +54,14 @@ optional arguments:
                         or error
   -s, --silent          Suppress non-error (stdout) Marlin output to console
   --dry-run             Write steering files but skip actual Marlin execution
-  --naf FILE            Do not execute Marlin directly but submit the job to NAF.
-                        The file contains parameters for the qsub utility.
-  --lxplus FILE         Do not execute Marlin directly but submit the job to LXPLUS.
-                        The file contains parameters for the bsub utility.
-  --subdir              Creates a separate subdirectory for every run. This can avoid problems
-                        with overwriting output files such as the "millepede.res" file from pede
-#+end_example
+  --plain               Output written to stdout/stderr and log file in
+                        prefix-less format i.e. without time stamping
+```
+
 * Preparation of Steering File Templates
-  Steering file templates are valid Marlin steering files (in xml
+  Steering file templates are valid Marlin steering files (in ```xml```
   format) where single values are replaced by variables in the form
-  "@SomeVariable@".
+  ```@SomeVariable@```.
 
   When jobsub is run, these placeholders are filled with a
   user-defined value that can be specified through any of these
