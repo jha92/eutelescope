@@ -119,18 +119,19 @@ optional arguments:
       * for more details, see the documentation to the Python module used
         for parsing: http://docs.python.org/2/library/configparser.html
       * for an example configuration file, please have a look on the provided examples
-  
+ 
   * Table (comma-separated text file)
   
-   - format: e.g. 
+    * format: e.g. 
      - export from Open/LibreOffice with default settings (UTF-8,comma-separated, text-field delimiter: ")
      - emacs org-mode table (see http://orgmode.org/manual/Tables.html)
-   - commented lines (starting with #) are ignored
-   - first row (after comments) has to provide column headers which identify the variables in the steering template to replace (case-insensitive)
-   - requires one column labeled "RunNumber"
-   - only considers placeholders left in the steering template after processing command-line arguments and config file options
-
-  * Concatenation
+    * commented lines (starting with #) are ignored
+    * first row (after comments) has to provide column headers which identify the variables in the steering template to replace     
+      (case-insensitive)
+    * requires one column labeled "RunNumber"
+    * only considers placeholders left in the steering template after processing command-line arguments and config file options
+    
+* Concatenation
    If you have an option e.g. the LCIO input files that you want to
    fill with several runs in one steering file, you can use a command
    line switch to activate concatenation. This replaces any steering
@@ -157,6 +158,7 @@ optional arguments:
    ```
 
    This can be useful if you want to combine several runs e.g. for alignment.
+
 
 * Workflow
 
