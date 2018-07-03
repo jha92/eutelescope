@@ -75,8 +75,8 @@ optional arguments:
 * Configuration
 
   There are only very few predefined options: 
-  * TemplateFile, TemplatePath: used to find the correct steering file template for the current task
-  * DatabasePath, LcioPath, HistogramPath, LogPath, SteeringPath: paths for storing of results
+  ** TemplateFile, TemplatePath: used to find the correct steering file template for the current task
+  ** DatabasePath, LcioPath, HistogramPath, LogPath, SteeringPath: paths for storing of results
   
   You can modify these options is the same way as placeholders in the template file, as described below.
   
@@ -93,34 +93,32 @@ optional arguments:
    * Config File
    
      Config files are text file consisting of sections (indicated by '[]'):
-      - a global section called ```[DEFAULT]```
-      - task-specific sections
+      * a global section called ```[DEFAULT]```
+      * task-specific sections
+     as well as "name: value" or "name=value" entries, where 'name' are
+     arbitrary steering file variables (case-insensitive).
 
-   as well as "name: value" or "name=value" entries, where 'name' are
-   arbitrary steering file variables (case-insensitive).
-
-   Some noteworthy features include:
-   - comment prefix characters are # and ;
-   - interpolation of format strings is supported, for example:
-     ```
-     [My Section]
-     foodir: %(dir)s/whatever
-     dir=frob
-     long: this value continues
-       in the next line
-     ```
-     would resolve the ```%(dir)s``` to the value of dir (frob in this case).
-   - some default interpolations are ```%(home)s``` and ```%(eutelescopePath)s```
-     which are set up with the environment variables ```$HOME``` and
-     ```$EUTELESCOPE```, respectively.
-   - The string ```@RunNumber@``` will be replaced in the template *after*
-     all other variable strings were filled-in; therefore, you can use
-     the ```@RunNumber@``` placeholder inside options, e.g. the file name.
-     It will be replaced by the run number padded with leading zeros
-     to 6 digits.
-   - for more details, see the documentation to the Python module used
-     for parsing: http://docs.python.org/2/library/configparser.html
-  - for an example configuration file, please have a look on the provided examples
+     Some noteworthy features include:
+      * comment prefix characters are # and ;
+      * interpolation of format strings is supported, for example:
+      ```
+      [My Section]
+      foodir: %(dir)s/whatever
+      dir=frob
+      long: this value continues
+         in the next line
+      ```
+      would resolve the ```%(dir)s``` to the value of dir (frob in this case).
+      * some default interpolations are ```%(home)s``` and ```%(eutelescopePath)s```
+        which are set up with the environment variables ```$HOME``` and
+        ```$EUTELESCOPE```, respectively.
+      * The string ```@RunNumber@``` will be replaced in the template *after*
+        all other variable strings were filled-in; therefore, you can use
+        the ```@RunNumber@``` placeholder inside options, e.g. the file name.
+        It will be replaced by the run number padded with leading zeros to 6 digits.
+      * for more details, see the documentation to the Python module used
+        for parsing: http://docs.python.org/2/library/configparser.html
+      * for an example configuration file, please have a look on the provided examples
   
   * Table (comma-separated text file)
   
@@ -161,6 +159,7 @@ optional arguments:
    This can be useful if you want to combine several runs e.g. for alignment.
 
 * Workflow
+
   An analysis is controlled by a config file (config.cfg), a csv-table 
   (runlist.csv) and steering file templates (*.xml).
 
