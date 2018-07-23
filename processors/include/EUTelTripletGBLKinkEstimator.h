@@ -51,6 +51,7 @@
 // ROOT includes
 #include <TMatrixD.h>
 #include "TH1D.h"
+#include "TTree.h"
 
 // system includes <>
 #include <string>
@@ -187,7 +188,18 @@ namespace eutelescope {
     FloatVec _thickness;
 
     EUTelTripletGBLUtility gblutil;
-
+  
+    // Output ntuples
+    TTree* _t_kink_angles;
+    std::vector<double> _xpos;
+    std::vector<double> _ypos;
+    std::vector<double> _xpos_up;
+    std::vector<double> _ypos_up;
+    std::vector<double> _xpos_dn;
+    std::vector<double> _ypos_dn;
+    std::vector<double> _kinkx;
+    std::vector<double> _kinky;
+    std::vector<double> _kinkxy;
 
       // definition of static members mainly used to name histograms
 #if defined(USE_AIDA) || defined(MARLIN_USE_AIDA)
