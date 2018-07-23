@@ -1,0 +1,18 @@
+<!--SUT Plane-->
+<layer>
+  <ladder       ID="100"
+                positionX="0.00"        positionY="0.00"        positionZ="72.5"
+                rotationZY="0.00"       rotationZX="0.0"        rotationXY="0.0"
+                sizeX="50."             sizeY="50."             thickness="0.01"
+                radLength="89."
+                />
+  <sensitive    ID="100"
+                positionX="0.00"        positionY="0.00"        positionZ="72.5"
+                sizeX="50."             sizeY="50."             thickness="0.01"
+                npixelX="1  "           npixelY="1"
+                pitchX="50"             pitchY="50"             resolution="1e10"
+                rotation1="-1.0"        rotation2="0.0"
+                rotation3="0.0"         rotation4="-1.0"
+                radLength="89."
+                />
+</layer>
