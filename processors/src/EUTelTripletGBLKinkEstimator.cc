@@ -1006,17 +1006,16 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
       // double ay[8];
       unsigned int k = 0;
 
+      unsigned int ndim = 2;
+      Eigen::VectorXd aResiduals(ndim);
+      Eigen::VectorXd aMeasErrors(ndim);
+      Eigen::VectorXd aResErrors(ndim);
+      Eigen::VectorXd aDownWeights(ndim);
 
-      Eigen::VectorXd aResiduals;
-      Eigen::VectorXd aMeasErrors;
-      Eigen::VectorXd aResErrors;
-      Eigen::VectorXd aDownWeights;
-
-
-      Eigen::VectorXd aKinks;
-      Eigen::VectorXd aKinkErrors;
-      Eigen::VectorXd kResErrors;
-      Eigen::VectorXd kDownWeights;
+      Eigen::VectorXd aKinks(ndim);
+      Eigen::VectorXd aKinkErrors(ndim);
+      Eigen::VectorXd kResErrors(ndim);
+      Eigen::VectorXd kDownWeights(ndim);
 
       unsigned int ndata = 2;
       //track = q/p, x', y', x, y
