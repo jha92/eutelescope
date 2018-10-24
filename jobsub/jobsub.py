@@ -515,7 +515,7 @@ def main(argv=None):
         return 2
 
     # dictionary keeping parameters; set some minimal default config values that will (possibly) be overwritten by the config file
-    parameters = {"templatepath":".", "templatefile":args.jobtask+"-tmp.xml", "logpath":"./output/logs", "histogrampath":"./output/histograms", "lciopath":"./output/lcio",
+    parameters = {"basepath":".", "templatepath":".", "templatefile":args.jobtask+"-tmp.xml", "logpath":"./output/logs", "histogrampath":"./output/histograms", "lciopath":"./output/lcio",
                   "databasepath":"./output/database", "steeringpath":"./output/steering"}
 
     # read in config file if specified on command line
@@ -562,14 +562,14 @@ def main(argv=None):
     log.debug( "Our final config:")
     for key, value in parameters.items():
         log.debug ( "     "+key+" = "+value)
-
     
     #create substructure of output folder
     for ipath in ("logpath","histogrampath","lciopath","databasepath","steeringpath"):
-        pathToCreate = os.path.abspath(parameters[ipath])
-        if not os.path.isdir(pathToCreate):
-            os.makedirs(pathToCreate)
-            log.debug("Create path for " + ipath + " to " + pathToCreate)
+        if not os.path.isabs(ipath):
+            parameters[ipath]=os.path.normpath(os.path.join(parameters["basepath"],parameters[ipath]))
+        if not os.path.isdir(parameters[ipath]):
+            os.makedirs(parameters[ipath])
+            log.debug("Create path for " + ipath + " to " + parameters[ipath])
 
 
     steeringTmpFileName = os.path.join(parameters["templatepath"], parameters["templatefile"])
@@ -695,7 +695,7 @@ def main(argv=None):
 
         # Write the steering file:
         log.debug ("Writing steering file for run number "+runnr)
-        basefilename = basedirectory + "/" + parameters["steeringpath"] + "/" + args.jobtask + "-" + runnr
+        basefilename = parameters["steeringpath"] + "/" + args.jobtask + "-" + runnr
         steeringFile = open(basefilename + ".xml", "w")
 
         try:
