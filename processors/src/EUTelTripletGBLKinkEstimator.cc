@@ -82,6 +82,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 #include <sstream>
 #include <memory>
 #include <map>
@@ -240,6 +241,17 @@ void EUTelTripletGBLKinkEstimator::init() {
 #if defined(USE_AIDA) || defined(MARLIN_USE_AIDA)
   bookHistos();
 #endif
+
+  _t_kink_angles = new TTree("KinkAngles","KinkAngles");
+  _t_kink_angles->Branch("x",&_xpos);
+  _t_kink_angles->Branch("y",&_ypos);
+  _t_kink_angles->Branch("x_up",&_xpos_up);
+  _t_kink_angles->Branch("y_up",&_ypos_up);
+  _t_kink_angles->Branch("x_dn",&_xpos_dn);
+  _t_kink_angles->Branch("y_dn",&_ypos_dn);
+  _t_kink_angles->Branch("kinkx",&_kinkx);
+  _t_kink_angles->Branch("kinky",&_kinky);
+  _t_kink_angles->Branch("kinkxy",&_kinkxy);
   
   // for mille binary
   std::string _binaryFilename = "milleKINK.bin";
@@ -278,6 +290,10 @@ void EUTelTripletGBLKinkEstimator::processRunHeader( LCRunHeader* runHeader) {
 
 //----------------------------------------------------------------------------
 void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
+
+  //clear variables for ntuple storing
+  _xpos.clear(); _ypos.clear(); _xpos_up.clear(); _ypos_up.clear(); _xpos_dn.clear(); _ypos_dn.clear();
+  _kinkx.clear(); _kinky.clear(); _kinkxy.clear();
 
   if( _nEvt % 1000 == 0 ) {
     streamlog_out( MESSAGE2 ) << "Processing event "
@@ -455,10 +471,6 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
     // Add it to the vector of telescope hits:
     hits.push_back(newhit);
 
-    //delete clusterVector;
-    //delete meshit;
-    //delete pos;
-
   } // loop over hits
 
   streamlog_out(DEBUG4) << "Event " << event->getEventNumber()
@@ -630,8 +642,21 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
     double dx = xB - xA; // driplet - triplet
     double dy = yB - yA;
 
-    // GBL with triplet A as seed:
+    //fill ntuple
+    _xpos_up.push_back(xA);
+    _ypos_up.push_back(yA);
 
+    _xpos_dn.push_back(xB);
+    _ypos_dn.push_back(yB);
+ 
+    _xpos.push_back((xA+xB)/2);
+    _ypos.push_back((yA+yB)/2);
+
+    _kinkx.push_back(kx);
+    _kinky.push_back(ky);
+    _kinkxy.push_back((fabs(kx)+fabs(ky))/2);
+
+    // GBL with triplet A as seed:
     std::vector<gbl::GblPoint> traj_points;
 
     // build up trajectory:
@@ -981,17 +1006,16 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
       // double ay[8];
       unsigned int k = 0;
 
+      unsigned int ndim = 2;
+      Eigen::VectorXd aResiduals(ndim);
+      Eigen::VectorXd aMeasErrors(ndim);
+      Eigen::VectorXd aResErrors(ndim);
+      Eigen::VectorXd aDownWeights(ndim);
 
-      Eigen::VectorXd aResiduals;
-      Eigen::VectorXd aMeasErrors;
-      Eigen::VectorXd aResErrors;
-      Eigen::VectorXd aDownWeights;
-
-
-      Eigen::VectorXd aKinks;
-      Eigen::VectorXd aKinkErrors;
-      Eigen::VectorXd kResErrors;
-      Eigen::VectorXd kDownWeights;
+      Eigen::VectorXd aKinks(ndim);
+      Eigen::VectorXd aKinkErrors(ndim);
+      Eigen::VectorXd kResErrors(ndim);
+      Eigen::VectorXd kDownWeights(ndim);
 
       unsigned int ndata = 2;
       //track = q/p, x', y', x, y
@@ -1225,6 +1249,9 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
   } // Loop over found tracks
 
   nsixHisto->fill( telescope_tracks.size() );
+
+  //fill ntuple tree
+  _t_kink_angles->Fill();
 
   //prevdutrefddt = dutrefddt;
   // Clear memory
