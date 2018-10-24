@@ -2,14 +2,14 @@
 This subdirectory contains example configurations and steering files
 that can be used as a basis for your own analysis:
 
-* anemone-2FEI4
-     The Anemone telescope (six planes of Mimosa26) and 2 ATLAS-FEI4 pixel
-
-* datura-noDUT
+* gbl_noDUT
      The Datura telescope with six planes of Mimosa26 without DUT
 
-* naf-submission
-     Example file for the qsub parameters needed for NAF job submission
+* gbl_SUT
+     The Datura telescope with six planes of Mimosa26 and a SUT for material budget imaging
+
+* condor-submission
+     Example file for the condor_submit parameters needed for NAF job submission
 
 All examples are also being used for automated data-driven tests using
 the CMake/CTest framework to verify the correct functionality of
