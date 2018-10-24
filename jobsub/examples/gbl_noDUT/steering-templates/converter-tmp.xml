@@ -74,7 +74,7 @@
   <parameter name="HotPixelDBFile" type="string" value="@DatabasePath@/run@HotPixelRunNumber@-hotpixel-m26-db.slcio"/>
   <!--This float number [0,1] represents the maximum allowed firing frequency
 within the selected number of event per cycle-->
-  <parameter name="MaxAllowedFiringFreq" type="float" value=">@MaxAllowedFiringFreq@"/>
+  <parameter name="MaxAllowedFiringFreq" type="float" value="@MaxAllowedFiringFreq@"/>
   <!--The number of events to be considered for each update cycle-->
   <parameter name="NoOfEvents" type="int" value="@NoOfEvents@"/>
   <!--Bin count for noisy pixel count versus noise cut histogram-->

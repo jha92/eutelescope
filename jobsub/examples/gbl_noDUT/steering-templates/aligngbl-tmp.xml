@@ -71,7 +71,7 @@
   <!--Offset scale factor.-->
   <parameter name="OffsetScaleFactor" type="int" value="1"/>
   <!--Name of the steering file for the pede program.-->
-  <parameter name="PedeSteerfileName" type="string" value="@PedeSteerFile@"/>
+  <parameter name="PedeSteerfileName" type="string" value="@DatabasePath@/@PedeSteerFile@"/>
   <!--Apply the obtained rotation to the preexisting offset vector or not..-->
   <parameter name="RotateOffsetVec" type="bool" value="true"/>
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
@@ -112,9 +112,9 @@
   <!--Maximal number of track candidates (Total)-->
   <parameter name="maxTrackCandidatesTotal" type="int" value="@AlignTrackCandidatesTotal@"/>
   <!--Name of the Millepede binary file-->
-  <parameter name="milleBinaryFilename" type="string" value="@MilleBinaryFile@"/>
+  <parameter name="milleBinaryFilename" type="string" value="@DatabasePath@/@MilleBinaryFile@"/>
   <!--Name of the steering file for the pede program-->
-  <parameter name="pedeSteerfileName" type="string" value="@PedeSteerFile@"/>
+  <parameter name="pedeSteerfileName" type="string" value="@DatabasePath@/@PedeSteerFile@"/>
   <!--x-resolution of sensors (z-ordered) [mm]-->
   <parameter name="resolutionX" type="FloatVec" value="@XResidualVec@"/>
   <!--y-resolution of sensors (z-ordered) [mm]-->
