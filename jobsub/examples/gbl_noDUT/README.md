@@ -1,15 +1,9 @@
-## Example for a EUTelescope analysis using the GBL processors for telescope data only.
+## Example for a EUTelescope analysis using the GBL processors for telescope data only (empty telescope = no DUT).
 
 
 Detailed information on how to use EUTELESCOPE software is available at
 
 http://eutelescope.desy.de
-
-
-
-Go to $EUTELESCOPE/jobsub/examples/gbl_local and create the directories needed for running the analysis:
-
-`mkdir -p ./output/histograms && mkdir -p ./output/database && mkdir -p ./output/logs && mkdir -p ./output/lcio`
 
 
 
