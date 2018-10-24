@@ -18,13 +18,7 @@
    <execute>
       <processor name="AIDA"/>
       <processor name="HitLocalToGlobal"/>
-      <processor name="Fitter00"/>
-      <processor name="Fitter01"/>
-      <processor name="Fitter02"/>
-      <processor name="Fitter03"/>
-      <processor name="Fitter04"/>
-      <processor name="Fitter05"/>
-      <processor name="Fitter06"/>
+      <group name="TelDUTFitter"/>
       <processor name="PrintEventNumber"/>
       <processor name="SaveOutput"/>
    </execute>
@@ -61,6 +55,93 @@
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
   <!--parameter name="Verbosity" type="string" value=""/-->
 </processor>
+
+  <group name="TelDUTFitter" >
+    <!--Names of alignment collections, should be in same order as application-->
+    <!--<parameter name="AlignmentCollectionNames" type="StringVec"> prealign align</parameter>-->
+    <!--List of sensor IDs for the DUT planes. Used to make the decision on whether ro accept the track or not. These planes are not used in track finder,--> 
+    <!--and not in the track fitter unless option 'useDutsInFit' is set.-->
+    <!--<parameter name="DutPlanes" type="IntVec"> </parameter-->
+    <!--Sigma of telescope resolution in the global X plane,-->
+    <!--<parameter name="DutResolutionX" type="float"> 4</parameter>-->
+    <!--Sigma of telescope resolution in the global Y plane,-->
+    <!--<parameter name="DutResolutionY" type="float"> 4</parameter>-->
+    <!--Beam energy [GeV], used to calculate amount of scatter-->
+    <parameter name="Ebeam" type="float"> @BeamEnergy@ </parameter>
+    <!--Names of input hit collections-->
+    <!--<parameter name="HitCollectionName" type="StringVec"> alignedHit</parameter>-->
+    <!--<parameter name="TrackCollectionName" type="string" lcioInType="Track"> track </parameter-->
+    <!--How many DUT hits do we need in order to accept track?-->
+    <!--<parameter name="NDutHits" type="int"> 0</parameter>-->
+    <!--dx/dz assumed by track finder-->
+    <!--<parameter name="NominalDxdz" type="float"> 0.0</parameter>-->
+    <!--dy/dz assumed by track finder-->
+    <!--<parameter name="NominalDydz" type="float"> 0.0</parameter>-->
+    <!--Radiation lengths of planes.-->
+    <!--<parameter name="RadiationLengths" type="FloatVec"> </parameter-->
+    <!--reference hit collection name -->
+    <!--<parameter name="ReferenceCollection" type="string"> refhit</parameter>-->
+    <!--How many telescope planes do we require to be included in the fit?-->
+    <!--<parameter name="RequireNTelPlanes" type="float"> 5</parameter>-->
+    <!--Scale thickness of DUT planes-->
+    <!--<parameter name="ScaleScattering" type="float"> 1</parameter>-->
+    <!--Sigma of telescope resolution in the global X plane,-->
+    <!--<parameter name="TelResolutionX" type="float"> 3</parameter>-->
+    <!--Sigma of telescope resolution in the global Y plane,-->
+    <!--<parameter name="TelResolutionY" type="float"> 3</parameter>-->
+    <!--List of sensor IDs for the telescope planes. These planes are used for the track finder, and track fitter.-->
+    <!--<parameter name="TelescopePlanes" type="IntVec">  </parameter-->
+    <!--<parameter name="mccollections" type="StringVec"> alignedHit </parameter-->
+    <!--resolution parameter for each plane in mm. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
+    <parameter name="Resolution" type="FloatVec"> @Resolution@ </parameter>
+<!--thickness parameter for each plane in mm. Note: these numbers are ordered according to the z position of the sensors and NOT according to the sensor id.-->
+    <parameter name="Thickness" type="FloatVec"> @Thickness@ </parameter>
+
+    <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
+    <!--<parameter name="Verbosity" type="string"> DEBUG4</parameter>-->
+
+    <parameter name="dut_plane" type="int"> </parameter>
+
+    <parameter name="InputCollectionTelescope" type="StringVec"> hit </parameter>
+    <parameter name="triCut" type="float"> @TripletCut@ </parameter>
+    <parameter name="matching_cut_x" type="double"> @MatchingCutX@ </parameter>
+    <parameter name="matching_cut_y" type="double"> @MatchingCutY@ </parameter>
+    <parameter name="slope_cut_x" type="double"> @SlopeCutX@ </parameter>
+    <parameter name="slope_cut_y" type="double"> @SlopeCutY@ </parameter>
+
+    <parameter name="kappa" type="double"> @Kappa@ </parameter>
+
+    <parameter name="probchi2_cut" type="double"> @Probchi2_cut@ </parameter>
+
+    <processor name="Fitter00" type="EUTelTripletGBL">
+      <parameter name="dut_plane" type="int">  0 </parameter>
+    </processor>
+
+    <processor name="Fitter01" type="EUTelTripletGBL">
+      <parameter name="dut_plane" type="int">  1 </parameter>
+    </processor>
+
+    <processor name="Fitter02" type="EUTelTripletGBL">
+      <parameter name="dut_plane" type="int">  2 </parameter>
+    </processor>
+
+    <processor name="Fitter03" type="EUTelTripletGBL">
+      <parameter name="dut_plane" type="int">  3 </parameter>
+    </processor>
+
+    <processor name="Fitter04" type="EUTelTripletGBL">
+      <parameter name="dut_plane" type="int">  4 </parameter>
+    </processor>
+
+    <processor name="Fitter05" type="EUTelTripletGBL">
+      <parameter name="dut_plane" type="int">  5 </parameter>
+    </processor>
+
+    <processor name="Fitter06" type="EUTelTripletGBL">
+      <parameter name="dut_plane" type="int">  -1 </parameter>
+    </processor>
+  </group>
+
 
  <processor name="Fitter00" type="EUTelTripletGBL">
  <!--Analysis for DATURA reference analysis -->
