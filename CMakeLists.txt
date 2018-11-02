@@ -367,9 +367,6 @@ endif()
 # software coordinators.
 # !RELEASE: the data-driven tests require DESY-AFS access and are not
 # useful for typical users (comment out the following lines)
-  INCLUDE(jobsub/examples/datura-noDUT/testing.cmake)
-  INCLUDE(jobsub/examples/datura-alone/testing.cmake)
-  INCLUDE(jobsub/examples/anemone-2FEI4/testing.cmake)
   INCLUDE(jobsub/examples/aconite-4chip/testing.cmake)
   INCLUDE(jobsub/examples/aconite-4chipLocal/testing.cmake)
 
