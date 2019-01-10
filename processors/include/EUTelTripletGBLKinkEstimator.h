@@ -201,6 +201,18 @@ namespace eutelescope {
     std::vector<double> _kinky;
     std::vector<double> _kinkxy;
 
+    //---UPDATE: add variables to ntuple
+    std::vector<double> _selx;
+    std::vector<double> _sely;
+    std::vector<double> _sumkinkx;
+    std::vector<double> _sumkinky;
+    std::vector<double> _kxprime;
+    std::vector<double> _kyprime;
+    std::vector<double> _kxprime2;
+    std::vector<double> _kyprime2;
+    //---
+
+
       // definition of static members mainly used to name histograms
 #if defined(USE_AIDA) || defined(MARLIN_USE_AIDA)
 
@@ -445,6 +457,19 @@ namespace eutelescope {
   AIDA::IProfile2D * gblaxvsxy;
   AIDA::IProfile2D * gblayvsxy;
   AIDA::IProfile2D * gblaxyvsxy;
+
+  //---UPDATE: from Hendrik
+  AIDA::IHistogram1D * gblkx6prime;
+  AIDA::IHistogram1D * gblky6prime;
+  AIDA::IHistogram1D * gblkx6prime2;
+  AIDA::IHistogram1D * gblky6prime2;
+  AIDA::IHistogram1D * gblsumkx;
+  AIDA::IHistogram1D * gblsumky;
+  AIDA::IHistogram1D * gblsumkxandsumky;
+  AIDA::IHistogram1D * gblsumkx2andsumky2;
+  AIDA::IHistogram1D * gblsumkx2plussumky2;
+  AIDA::IHistogram2D * gblsumkxvssumky;
+  //---
 
   // This ia a 3D histo, i.e. it preserves binned data for the third input
   AIDA::IHistogram3D * gblaxprime3D;

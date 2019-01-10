@@ -1110,6 +1110,58 @@ void EUTelTripletGBLKinkEstimator::bookHistos()
     createProfile1D( "GBL/gblaxprime6vsx", 22, -11, 11, -100, 100 );
   gblaxprime6vsx->setTitle( "GBL xprime vs x;x [mm];<#sigma_{kink}> [mrad]" );
 
+
+  //---UPDATE: add histos similar to Hendrik
+  gblkx6prime = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblkx6prime", 1000, -50., 50.);
+  gblkx6prime->setTitle( "GBL kxprime (loc deriv) angle at DUT;x angle at DUT [mrad];tracks" );
+
+  gblky6prime = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblky6prime", 1000, -50., 50.);
+  gblky6prime->setTitle( "GBL kyprime (loc deriv) angle at DUT;y angle at DUT [mrad];tracks" );
+
+  gblkx6prime2 = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblkx6prime2", 1000, -50., 50.);
+  gblkx6prime2->setTitle( "GBL kxprime2 (loc deriv) angle at DUT;x angle at DUT [mrad];tracks" );
+
+  gblky6prime2 = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblky6prime2", 1000, -50., 50.);
+  gblky6prime2->setTitle( "GBL kyprime2 (loc deriv) angle at DUT;y angle at DUT [mrad];tracks" );
+
+  gblsumkx = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblsumkx", 2000, -50., 50.);
+  gblsumkx->setTitle( "GBL kxprime + kxprime2 (loc deriv) angle at DUT;x angle at DUT [mrad];tracks" );
+
+  gblsumky = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblsumky", 2000, -50., 50.);
+  gblsumky->setTitle( "GBL kyprime + kyprime2 (loc deriv) angle at DUT;x angle at DUT [mrad];tracks" );
+
+  gblsumkxandsumky = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblsumkxandsumky", 2000, -50., 50.);
+  gblsumkxandsumky->setTitle( "GBL sumkx AND sumky (loc deriv) angle at DUT;x angle at DUT [mrad];tracks" );
+
+  gblsumkx2andsumky2 = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblsumkx2andsumky2", 25010, -1, 2500 );
+  gblsumkx2andsumky2->setTitle( "GBL sumkx^2 AND sumky^2 (loc deriv) angle at DUT;x angle at DUT [mrad^2];tracks" );
+
+  gblsumkx2plussumky2 = AIDAProcessor::histogramFactory(this)->
+    createHistogram1D( "GBL/gblsumkx2plussumky2", 25010, -1, 2500 );
+  gblsumkx2plussumky2->setTitle( "GBL sumkx^2 plus sumky^2 (loc deriv) angle at DUT;x angle at DUT [mrad^2];tracks" );
+
+  gblsumkxvssumky = AIDAProcessor::histogramFactory(this)->
+    createHistogram2D( "GBL/gblsumkxvssumky", 1000, -10., 10., 1000, -10., 10.);
+  gblsumkxvssumky->setTitle( "sumkx - sumky correlation;sumkx [mrad];sumky [mrad];tracks" );
+  //---
+
+
+
+
+
+
+
+
+
+
   /*
     gbldx6Histo = AIDAProcessor::histogramFactory(this)->
     createHistogram1D( "GBL/gbldx6", 100, -1000, 1000 );

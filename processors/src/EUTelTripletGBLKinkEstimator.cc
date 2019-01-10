@@ -252,6 +252,17 @@ void EUTelTripletGBLKinkEstimator::init() {
   _t_kink_angles->Branch("kinkx",&_kinkx);
   _t_kink_angles->Branch("kinky",&_kinky);
   _t_kink_angles->Branch("kinkxy",&_kinkxy);
+
+  //---UPDATE: add more variables to ntuple
+  _t_kink_angles->Branch("x_sel",&_selx);
+  _t_kink_angles->Branch("y_sel",&_sely);
+  _t_kink_angles->Branch("sumkinkx",&_sumkinkx);
+  _t_kink_angles->Branch("sumkinky",&_sumkinky);
+  _t_kink_angles->Branch("kxprime",&_kxprime);
+  _t_kink_angles->Branch("kyprime",&_kyprime);
+  _t_kink_angles->Branch("kxprime2",&_kxprime2);
+  _t_kink_angles->Branch("kyprime2",&_kyprime2);
+  //---
   
   // for mille binary
   std::string _binaryFilename = "milleKINK.bin";
@@ -294,6 +305,10 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
   //clear variables for ntuple storing
   _xpos.clear(); _ypos.clear(); _xpos_up.clear(); _ypos_up.clear(); _xpos_dn.clear(); _ypos_dn.clear();
   _kinkx.clear(); _kinky.clear(); _kinkxy.clear();
+
+  //---UPDATE: add variables to ntuple
+  _selx.clear(); _sely.clear(); _sumkinkx.clear(); _sumkinky.clear(); _kxprime.clear(); _kyprime.clear(); _kxprime2.clear(); _kyprime2.clear();
+  //---
 
   if( _nEvt % 1000 == 0 ) {
     streamlog_out( MESSAGE2 ) << "Processing event "
@@ -643,18 +658,19 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
     double dy = yB - yA;
 
     //fill ntuple
-    _xpos_up.push_back(xA);
-    _ypos_up.push_back(yA);
+    //UPDATE: changed signs for x and y!
+    _xpos_up.push_back(-xA);
+    _ypos_up.push_back(-yA);
 
-    _xpos_dn.push_back(xB);
-    _ypos_dn.push_back(yB);
+    _xpos_dn.push_back(-xB);
+    _ypos_dn.push_back(-yB);
  
-    _xpos.push_back((xA+xB)/2);
-    _ypos.push_back((yA+yB)/2);
+    _xpos.push_back(-(xA+xB)/2);
+    _ypos.push_back(-(yA+yB)/2);
 
-    _kinkx.push_back(kx);
-    _kinky.push_back(ky);
-    _kinkxy.push_back((fabs(kx)+fabs(ky))/2);
+    _kinkx.push_back(kx*1E3);
+    _kinky.push_back(ky*1E3);
+    _kinkxy.push_back((fabs(kx*1E3)+fabs(ky*1E3))/2);
 
     // GBL with triplet A as seed:
     std::vector<gbl::GblPoint> traj_points;
@@ -1086,6 +1102,39 @@ void EUTelTripletGBLKinkEstimator::processEvent( LCEvent * event ) {
 
       ipos = ilab[3];
       traj.getResults( ipos, aCorrection, aCovariance );
+
+      //---UPDATE: new part from Hendrik
+      double sumkinkx;
+      double sumkinky;
+      gblkx6prime->fill( aCorrection[5]*1E3 ); // kink x [mrad]                                                                                                                                           
+      gblky6prime->fill( aCorrection[6]*1E3 ); // kink y [mrad]                                                                                                                                           
+      gblkx6prime2->fill( aCorrection[7]*1E3 ); // kink x [mrad]                                                                                                                                          
+      gblky6prime2->fill( aCorrection[8]*1E3 ); // kink y [mrad]                                                                                                                                          
+      
+      sumkinkx = aCorrection[7] + aCorrection[5];
+      sumkinky = aCorrection[8] + aCorrection[6];
+                                                                                                                                                                                                   
+      gblsumkx->fill( (sumkinkx)*1E3 ); // kink x [mrad]                                                                                                                                                  
+      gblsumky->fill( (sumkinky)*1E3 ); // kink y [mrad]                                                                                                                                                  
+      gblsumkxandsumky->fill( (sumkinkx)*1E3 ); // kink  x [mrad]                                                                                                                                         
+      gblsumkxandsumky->fill( (sumkinky)*1E3 ); // kink  y [mrad]                                                                                                                                         
+      gblsumkx2andsumky2->fill( sumkinkx*sumkinkx*1E6 );
+      gblsumkx2andsumky2->fill( sumkinky*sumkinky*1E6 );
+      gblsumkx2plussumky2->fill((sumkinkx*sumkinkx + sumkinky*sumkinky)*1E6 );
+      gblsumkxvssumky->fill(sumkinkx*1e3, sumkinky*1e3);
+      
+      //add to ntuple
+      _selx.push_back(-xA);
+      _sely.push_back(-yA);
+      _sumkinkx.push_back(sumkinkx*1E3);
+      _sumkinky.push_back(sumkinky*1E3);
+      _kxprime.push_back(aCorrection[5]*1E3);
+      _kyprime.push_back(aCorrection[6]*1E3);
+      _kxprime2.push_back(aCorrection[7]*1E3);
+      _kyprime2.push_back(aCorrection[8]*1E3);
+      //---
+
+
       gblax6Histo->fill( aCorrection[1]*1E3 ); // angle x [mrad]
       gblay6Histo->fill( aCorrection[2]*1E3 ); // angle y [mrad]
       gblax6primeHisto->fill( aCorrection[5]*1E3 ); // angle x [mrad]
