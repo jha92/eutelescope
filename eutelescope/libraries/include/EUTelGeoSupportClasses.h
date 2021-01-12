@@ -9,7 +9,7 @@
 #include "gearimpl/TrackerPlanesLayerLayoutImpl.h"
 #include "gearimpl/TrackerPlanesParametersImpl.h"
 /** Helper classes to represent the geometry reflected in the GEAR file in
- * EUTelescope .The description is based on layers and planes. A plane can 
+ * EUTelescope. The description is based on layers and planes. A plane can 
  * either be an active or passive one - where active derives from passive. 
  * Even for the case of a one plane telescope, you will have one layer and 
  * one active (plane). The layer holds the alignment information for all
@@ -35,6 +35,7 @@ namespace eutelescope {
 
     class EUTelActive;
     class EUTelPassive;
+    class EUTelAnnulus;
 
     class EUTelMaterial {
     public:
@@ -300,6 +301,91 @@ namespace eutelescope {
       }
 
       std::string getGeometry() const { return _geometry; }
+    };
+
+
+    class EUTelAnnulus {
+
+    public:
+      EUTelAnnulus();
+
+    protected:
+      double _pitchPhi;
+      
+      double _stereoAngle;
+      
+      double _rmin, _rmax;
+      
+      double _order;
+      
+      double _rCentre;
+      
+      double _Fx, _Fy;
+      
+    public:
+      void setPitchPhi(double phi) {
+        _pitchPhi = phi;
+      }
+      
+      void setStereoAngle(double angle) {
+	_stereoAngle = angle;
+      }
+
+      void setRMin(double min) {
+        _rmin = min;
+      }
+
+      void setRMax(double max) {
+        _rmax = max;
+      }
+
+      void setOrder(double order) {
+        _order = order;
+      }
+
+      void setRCentre(double centre) {
+        _rCentre = centre;
+      }
+
+      void setFx(double x) {
+        _Fx = x;
+      }
+
+      void setFy(double y) {
+	_Fy = y;
+      }
+
+      double getPitchPhi() const {
+	return _pitchPhi;
+      }
+
+      double getStereoAngle() const {
+	return _stereoAngle;
+      }
+
+      double getRMin() const {
+	return _rmin;
+      }
+
+      double getRMax() const {
+	return _rmax;
+      }
+
+      double getOrder() const {
+	return _order;
+      }
+
+      double getRCentre() const {
+	return _rCentre;
+      }
+
+      double getFx() const {
+	return _Fx;
+      }
+
+      double getFy() const {
+	return _Fy;
+      }
     };
   }
 } // namespaces

@@ -171,6 +171,22 @@ class EUTelTrackerDataInterfacerImpl : public EUTelTrackerDataInterfacer {
 	}
 
 	template<>
+	inline void EUTelTrackerDataInterfacerImpl<EUTelAnnulusPixel>::pushChargeValues(EUTelAnnulusPixel const & pixel){
+                _trackerData->chargeValues().push_back( static_cast<float>(pixel.getXCoord()) );
+                _trackerData->chargeValues().push_back( static_cast<float>(pixel.getYCoord()) );
+                _trackerData->chargeValues().push_back( pixel.getSignal() );
+                _trackerData->chargeValues().push_back( pixel.getTime() );
+
+                _trackerData->chargeValues().push_back( pixel.getPosX() );
+                _trackerData->chargeValues().push_back( pixel.getPosY() );
+                _trackerData->chargeValues().push_back( pixel.getRmin() );
+                _trackerData->chargeValues().push_back( pixel.getRmax() );
+		_trackerData->chargeValues().push_back( pixel.getDphi() );
+		_trackerData->chargeValues().push_back( pixel.getR() );
+		_trackerData->chargeValues().push_back( pixel.getAngle() );
+        }
+
+	template<>
 	inline void EUTelTrackerDataInterfacerImpl<EUTelMuPixel>::pushChargeValues(EUTelMuPixel const & pixel){
 		_trackerData->chargeValues().push_back( static_cast<float>(pixel.getXCoord()) );
 		_trackerData->chargeValues().push_back( static_cast<float>(pixel.getYCoord()) );
@@ -217,6 +233,24 @@ class EUTelTrackerDataInterfacerImpl : public EUTelTrackerDataInterfacer {
 						);
 		}
 	}
+
+	template<>
+        inline void EUTelTrackerDataInterfacerImpl< EUTelAnnulusPixel>::fillPixelVec() {
+                for( size_t index = 0 ; index < _trackerData->getChargeValues().size() ; index += 11 ) {
+                        _pixelVec.emplace_back( static_cast<short>(_trackerData->getChargeValues()[ index ] ),
+                                                static_cast<short>(_trackerData->getChargeValues()[ index + 1 ]),
+                                                static_cast<float>(_trackerData->getChargeValues()[ index + 2 ]),
+                                                static_cast<short>(_trackerData->getChargeValues()[ index + 3 ]),
+                                                _trackerData->getChargeValues()[ index + 4 ],
+                                                _trackerData->getChargeValues()[ index + 5 ],
+                                                _trackerData->getChargeValues()[ index + 6 ],
+                                                _trackerData->getChargeValues()[ index + 7 ],
+						_trackerData->getChargeValues()[ index + 8 ],
+                                                _trackerData->getChargeValues()[ index + 9 ],
+						_trackerData->getChargeValues()[ index + 10 ]
+                                                );
+                }
+        }
 
 	template<>
 	inline void EUTelTrackerDataInterfacerImpl< EUTelMuPixel>::fillPixelVec() {

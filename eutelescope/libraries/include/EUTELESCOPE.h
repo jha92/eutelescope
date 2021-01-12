@@ -576,6 +576,7 @@ namespace eutelescope {
     kEUTelDFFClusterImpl = 2,
     kEUTelBrickedClusterImpl = 3,
     kEUTelGenericSparseClusterImpl = 4,
+    kEUTelAnnulusClusterImpl = 5,
     // add here all the other cluster type numbering them in between 0
     // and 31 unknown
     kUnknown = 31
@@ -590,8 +591,9 @@ namespace eutelescope {
     kEUTelSimpleSparsePixel = 1,
     kEUTelGenericSparsePixel = 2,
     kEUTelGeometricPixel = 3,
-    // add here your implementation
     kEUTelMuPixel = 4,
+    kEUTelAnnulusPixel = 5,
+    // add here all other pixel implementations
     kUnknownPixelType = 31
   };
 

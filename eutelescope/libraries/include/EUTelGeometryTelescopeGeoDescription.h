@@ -96,14 +96,17 @@ namespace eutelescope {
       /** Pointer to the pixel geometry manager */
       std::unique_ptr<EUTelGenericPixGeoMgr> _pixGeoMgr;
 
-      /** Flag if geoemtry is already initialized */
+      /** Flag if geometry is already initialized */
       bool _isGeoInitialized;
+
+      /** Flag if annulus geometry is already initialized */
+      bool _isAnnulusGearInitialized;
 
       /** Map containing the path to the TGeoNode in ROOT's TGeo framework for each plane (identified by its planeID) */
       std::map<int, std::string> _planePath;
 
       /** Map holding the transformation matrix for each plane (identified by its planeID) */
-	    std::map<int, TGeoMatrix*> _TGeoMatrixMap;
+      std::map<int, TGeoMatrix*> _TGeoMatrixMap;
 
       /** Conter to indicate if instance of this object exists */
       static unsigned _counter;
@@ -131,6 +134,9 @@ namespace eutelescope {
        */
       static EUTelGeometryTelescopeGeoDescription &
       getInstance(gear::GearMgr *_g);
+
+      /** Map of annulus planes */
+      std::map<int, EUTelAnnulus*> _annulusMap;
 
       /**TODO */
       void updateGearManager();
@@ -398,10 +404,10 @@ namespace eutelescope {
 
       // This outputs the total percentage radiation length for the full
       // detector system.
-//      float calculateTotalRadiationLengthAndWeights(
- //         const double startD[3], const double endD[3],
-  //        std::map<const int, double> &, std::map<const int, double> &);
-   //   double addKapton(std::map<const int, double> &mapSensor);
+      //   float calculateTotalRadiationLengthAndWeights(
+      //   const double startD[3], const double endD[3],
+      //   std::map<const int, double> &, std::map<const int, double> &);
+      //   double addKapton(std::map<const int, double> &mapSensor);
 
       /** Magnetic field */
       const gear::BField &getMagneticField() const {
@@ -438,8 +444,8 @@ namespace eutelescope {
       /**  */
       void updateTrackerPlanesLayout();
 
-      /** housing for the above two */
       void readGear();
+      void readAnnulusGear();
 
       void translateSiPlane2TGeo(TGeoVolume *, int);
 
